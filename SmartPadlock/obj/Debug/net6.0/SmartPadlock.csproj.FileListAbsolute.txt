@@ -1,0 +1,15 @@
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\bin\Debug\net6.0\SmartPadlock.exe
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\bin\Debug\net6.0\SmartPadlock.deps.json
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\bin\Debug\net6.0\SmartPadlock.runtimeconfig.json
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\bin\Debug\net6.0\SmartPadlock.dll
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\bin\Debug\net6.0\ref\SmartPadlock.dll
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\bin\Debug\net6.0\SmartPadlock.pdb
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.csproj.AssemblyReference.cache
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.AssemblyInfoInputs.cache
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.AssemblyInfo.cs
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.csproj.CoreCompileInputs.cache
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.dll
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\ref\SmartPadlock.dll
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.pdb
+C:\Users\carlo\source\repos\SmartPadlock\SmartPadlock\obj\Debug\net6.0\SmartPadlock.genruntimeconfig.cache
