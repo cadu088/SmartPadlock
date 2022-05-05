@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\carlo\\source\\repos\\SmartPadlock\\SmartPadlock\\SmartPadlock.csproj",
+      "projectUniqueName": "C:\\Users\\carlo\\OneDrive\\Documentos\\GitHub\\SmartPadlock\\SmartPadlock\\SmartPadlock.csproj",
       "projectName": "SmartPadlock",
-      "projectPath": "C:\\Users\\carlo\\source\\repos\\SmartPadlock\\SmartPadlock\\SmartPadlock.csproj",
+      "projectPath": "C:\\Users\\carlo\\OneDrive\\Documentos\\GitHub\\SmartPadlock\\SmartPadlock\\SmartPadlock.csproj",
       "packagesPath": "C:\\Users\\carlo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\carlo\\source\\repos\\SmartPadlock\\SmartPadlock\\obj\\",
+      "outputPath": "C:\\Users\\carlo\\OneDrive\\Documentos\\GitHub\\SmartPadlock\\SmartPadlock\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\carlo\\AppData\\Roaming\\NuGet\\NuGet.Config",
