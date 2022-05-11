@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ys7dsBaKKi3BhHC62/69KmblKgnDm+UsuBsDkCrRgAC6UBTGjkaDj9LK+QSKtjGceuz4PciODoQ0X0WIkKKNeg==",
+  "dgSpecHash": "Gh5RZ1jtv5pxgjSrP/CT+oc9HPtD4NsBMCx5dDeyTAtF24YVk8wESgONNYqt735GLMDfsdgtCt5MLnXx1H8vkA==",
   "success": true,
   "projectFilePath": "C:\\Users\\carlo\\OneDrive\\Documentos\\GitHub\\SmartPadlock\\SmartPadlock\\SmartPadlock.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\carlo\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

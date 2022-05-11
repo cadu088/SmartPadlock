@@ -25,7 +25,7 @@ namespace SmartPadlock
 
         public bool AlterPassword(string newPassword)
         {
-            if(APP_ID == null || URL == null)
+            if (APP_ID == null || URL == null)
             {
                 Console.WhiteLine("Não é possivel alterar a senha de uma aplicação nula!");
                 return false;
@@ -34,5 +34,35 @@ namespace SmartPadlock
             return true;
         }
 
+        public bool AlterData(string newData, string index)
+        {
+            if (index == "name")
+            {
+                APP_ID = newData;
+            }
+            else if (index == "url")
+            {
+                URL = newData;
+            }
+            else
+            {
+                Console.WhiteLine("O index utilizado não é valido... Utilize name para alterar o nome da aplicação ou url para alterar o link da aplicação!");
+                return false;
+            }
+            return true;
+
+        }
+
+        public void ReadingCliente()
+        {
+            Console.WhiteLine();
+            Console.WhiteLine("_________________________________");
+            Console.WhiteLine("Aplicação: " + APP_ID);
+            Console.WhiteLine("URL: " + URL);
+            Console.WhiteLine("Criação: " + DT_CREATE);
+            Console.WhiteLine("Senha: " + PASS_ID);
+            Console.WhiteLine("_________________________________");
+            Console.WhiteLine();
+        }
     }
 }

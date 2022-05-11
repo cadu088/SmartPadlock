@@ -8,8 +8,10 @@ using System.Collections.Generic;
 
 var user = new User();
 
+Console.WriteLine(user.ToString());
 
-var userErr = new User();
+
+//var userErr = new User();
 
 
 //guilhermerodrigues@gmail.com
