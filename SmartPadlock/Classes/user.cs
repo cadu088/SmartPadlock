@@ -8,7 +8,7 @@ using System.IO;
 using System.Collections.Generic;
 using SmartPadlock.Classes;
 
-namespace SmartPadlock
+namespace SmartPadlock.Classes
 {
     public class User
     {
@@ -19,72 +19,21 @@ namespace SmartPadlock
 
         public DateTime DT_CREATE = new DateTime();
 
-        public User()
+        public void Create(string name, DateTime birth, string email, string password)
         {
-            var aplicationControler = new aplicationControler();
-            Console.Write("Digite o nome completo sem abreviações: ");
-            NAME_USER = Console.ReadLine();
-            bool verificaEmail = false;
-            while (!verificaEmail)
-            {
-                Console.Write("Digite seu email: ");
-                EMAIL_USER = Console.ReadLine();
-                verificaEmail = EMAIL_USER.Contains("@");
-            }
-            Console.Write("Digite sua data de aniversario. Ex: 28/08/2002: ");
-            int dia = int.Parse(Console.ReadLine());
-            Console.Write("/");
-            int mes = int.Parse(Console.ReadLine());
-            Console.Write("/");
-            int ano = int.Parse(Console.ReadLine());
-            DT_BIRTH_USER = new DateTime(ano, mes, dia);
-
-
-
-            if (BuscarUser(new Contract(this, false)))
-            {
-                Console.Clear();
-                Console.WriteLine("| Usuario encontrado com sucesso! |");
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine();
-                var login = new login();
-
-                if (login.Create(this))
-                {
-                    Console.WriteLine("Login efetuado com sucesso!");
-                    aplicationControler.login = true;
-                }
-                else
-                {
-                    Console.WriteLine("Falha ao efetuar login!");
-                    aplicationControler.login = false;
-                };
-            }
-            else
-            {
-                var createUser = new createUser();
-                if (createUser.Create(this))
-                {
-                    Console.Clear();
-                    Console.WriteLine("| Usuario criado com sucesso! |");
-                    Console.WriteLine("-------------------------------");
-                    aplicationControler.login = true;
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("Falha ao criar usuario, tente novamente mais tarde...");
-                    Console.WriteLine(":(");
-                    aplicationControler.login = false;
-                } ;
-            }
+           NAME_USER = name;
+           DT_BIRTH_USER = birth;
+           EMAIL_USER = email;
+           PASSWORD_USER = password;
+           
         }
 
 
 
 
-        private bool BuscarUser(Contract contratoOrigem)
+        public bool BuscarUser(bool sign)
         {
+            Contract contratoOrigem = new Contract(this, sign);
             try
             {
                 string path = ("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt");

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
 
-namespace SmartPadlock
+namespace SmartPadlock.Classes
 {
     public class User
     {
@@ -18,45 +18,12 @@ namespace SmartPadlock
 
         public DateTime DT_CREATE = new DateTime();
 
-        public User()
+        public User(string name, DateTime birth, string email, string password)
         {
-            Console.Write("Digite o nome completo sem abreviações: ");
-            NAME_USER = Console.ReadLine();
-            bool verificaEmail = false;
-            while (!verificaEmail)
-            {
-                Console.Write("Digite seu email: ");
-                EMAIL_USER = Console.ReadLine();
-                verificaEmail = EMAIL_USER.Contains("@");
-            }
-            Console.Write("Digite sua data de aniversario. Ex: 28/08/2002: ");
-            int dia = int.Parse(Console.ReadLine());
-            Console.Write("/");
-            int mes = int.Parse(Console.ReadLine());
-            Console.Write("/");
-            int ano = int.Parse(Console.ReadLine());
-            DT_BIRTH_USER = new DateTime(ano, mes, dia);
-
-            bool verificaSenha = false;
-            while (!verificaSenha)
-            {
-                Console.WriteLine("Para finalizar digite uma senha de 10 caracteres: ");
-                PASSWORD_USER = Console.ReadLine();
-                verificaSenha = PASSWORD_USER.Length >= 10;
-            }
-
-            if (BuscarUser(new Contract(this, false)))
-            {
-                Console.WriteLine("Login feito com sucesso");
-
-                Console.WriteLine("Seus dados são");
-                Task<string> data = DescriptografarUserAsync(new Contract(this, false), new Contract(this, true));
-                Console.WriteLine(data.Result);
-            }
-            else if(CriptografarUser(new Contract(this, false), new Contract(this, true)))
-            {
-                Console.WriteLine("Usuario criado com sucesso!");
-            }
+            NAME_USER = name;
+            DT_BIRTH_USER = birth;
+            EMAIL_USER = email;
+            PASSWORD_USER = password;
         }
 
         public bool CadastrarSenha(string APP_ID, string PASS_ID)
@@ -64,7 +31,7 @@ namespace SmartPadlock
             return true;
         }
 
-        private bool CriptografarUser(Contract contratoOrigem, Contract contrato)
+        public bool CriptografarUser(Contract contratoOrigem, Contract contrato)
         {
             try
             {
@@ -104,7 +71,7 @@ namespace SmartPadlock
             }
         }
 
-        private async Task<string> DescriptografarUserAsync(Contract contratoOrigem, Contract contrato)
+        public async Task<string> DescriptografarUserAsync(Contract contratoOrigem, Contract contrato)
         {
             try
             {
@@ -144,7 +111,7 @@ namespace SmartPadlock
             }
         }
 
-        private bool BuscarUser(Contract contratoOrigem)
+        public bool BuscarUser(Contract contratoOrigem)
         {
             try
             {

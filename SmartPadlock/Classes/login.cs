@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 
 namespace SmartPadlock.Classes
 {
-    internal class login
+    public class Login
     {
+        public bool status = false;
 
-        public bool Create(User usuario)
+        public async Task<bool> CreateAsync(User usuario)
         {
             try
             {
                 var aplicationControler = new aplicationControler();
                 Console.Clear();
-                Console.WriteLine("| Login |");
-                Console.Write("Para verificar suas senhas digite a senha de uso unico: ");
+                Console.WriteLine("|-| Login |-|");
+                Console.Write("|-| Para verificar suas senhas digite a senha de uso unico: ");
 
                 bool verificaSenha = false;
                 usuario.PASSWORD_USER = Console.ReadLine();
@@ -24,18 +25,28 @@ namespace SmartPadlock.Classes
 
                 while (!verificaSenha)
                 {
-                    Console.WriteLine("Digite uma senha valida para continuar: ");
+                    Console.Write("|-| Digite uma senha valida para continuar: ");
                     usuario.PASSWORD_USER = Console.ReadLine();
                     verificaSenha = usuario.PASSWORD_USER.Length >= 10;
                 }
-
-
-                Console.WriteLine("Seus dados são");
                 Task<string> data = aplicationControler.DescriptografarUserAsync(new Contract(usuario, false), new Contract(usuario, true));
-                Console.WriteLine(data.Result);
+
+                string response = await data;
+
+                if(response == "Senha invalida!")
+                {
+                    Console.Clear();
+                    Console.WriteLine("|-| Senha invalida!");
+                    status = false;
+                    aplicationControler.login = false;
+                    return false;
+                }
+                Console.WriteLine(response);
+                status = aplicationControler.login;
                 return true;
             }catch (Exception ex)
             {
+                status = false;
                 Console.WriteLine(ex.Message);
                 return false;
             }

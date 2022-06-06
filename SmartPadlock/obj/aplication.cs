@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartPadlock
+namespace SmartPadlock.Classes
 {
-    internal class Aplication
+    public class Aplication
     {
         public string APP_ID { get; private set; }
 
@@ -25,11 +25,6 @@ namespace SmartPadlock
 
         public bool AlterPassword(string newPassword)
         {
-            if (APP_ID == null || URL == null)
-            {
-                Console.WhiteLine("Não é possivel alterar a senha de uma aplicação nula!");
-                return false;
-            }
             PASS_ID = newPassword;
             return true;
         }
@@ -43,11 +38,6 @@ namespace SmartPadlock
             else if (index == "url")
             {
                 URL = newData;
-            }
-            else
-            {
-                Console.WhiteLine("O index utilizado não é valido... Utilize name para alterar o nome da aplicação ou url para alterar o link da aplicação!");
-                return false;
             }
             return true;
 
@@ -66,3 +56,4 @@ namespace SmartPadlock
         }
     }
 }
+

@@ -16,9 +16,12 @@ namespace SmartPadlock.Classes
         {
             try
             {
-                return JsonConvert.SerializeObject(request);
+                string response = JsonConvert.SerializeObject(request);
+                int i = response.Length;
+                return response;
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return "Erro ao converter dados no bloco ReadingJSON";
@@ -31,10 +34,10 @@ namespace SmartPadlock.Classes
             try
             {
                 response = JsonConvert.DeserializeObject<List<Aplication>>(request);
-                if(response == null)
-                {
-                    throw new Exception("Erro de conversão resposta nula.");
-                }
+                //if(response == null)
+                //{
+                //    throw new Exception("Erro de conversão resposta nula.");
+                //}
                 return response;
             }
             catch (Exception ex)
@@ -71,23 +74,32 @@ namespace SmartPadlock.Classes
                             using (StreamReader decryptReader = new(cryptoStream))
                             {
                                 string decryptedMessage = await decryptReader.ReadToEndAsync();
+                                login = true;
                                 return decryptedMessage;
                             }
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Padding is invalid and cannot be removed.") return "Senha invalida!";
-                return ex.Message;
+                login = false;
+                return "Senha invalida!";
             }
         }
 
-        public bool CriptografarUser(Contract contratoOrigem, Contract contrato, User usuario)
+        public bool CriptografarUser(Contract contratoOrigem, Contract contrato, string view)
         {
             try
             {
+                if (view != "")
+                {
+                    if (File.Exists(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt")))
+                    {
+                        File.Delete(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt"));
+                    }
+                }
                 using (FileStream fileStream = new(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt"), FileMode.OpenOrCreate))
                 {
                     using (Aes aes = Aes.Create())
@@ -105,20 +117,16 @@ namespace SmartPadlock.Classes
                         {
                             using (StreamWriter encryptWriter = new(cryptoStream))
                             {
-                                encryptWriter.WriteLine(usuario.NAME_USER);
-                                encryptWriter.WriteLine(usuario.EMAIL_USER);
-                                encryptWriter.WriteLine(usuario.DT_BIRTH_USER);
-                                encryptWriter.WriteLine(usuario.PASSWORD_USER);
+                                encryptWriter.WriteLine(view);
                             }
                         }
                     }
                 }
-
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"The encryption failed. {ex}");
+                Console.WriteLine($"Falha na criptografia. {ex}");
                 return false;
             }
         }

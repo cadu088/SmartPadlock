@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
-namespace SmartPadlock
+namespace SmartPadlock.Classes
 {
     public class Contract
     {
@@ -51,8 +51,6 @@ namespace SmartPadlock
                 verificaCaracter(DATA_USER.EMAIL_USER + DATA_USER.DT_BIRTH_USER.ToString())), -1) / 0.63;
             }
 
-            Console.WriteLine(hashPrimario);
-            Console.WriteLine(hashVerificador);
             //Concatena e cria o esqueleto 
             string hashPrefab = (hashPrimario).ToString("E15", CultureInfo.InvariantCulture).Split('.')[1].Split('E')[0] + hashVerificador.ToString().Split(',')[1];
 ;
@@ -109,8 +107,6 @@ namespace SmartPadlock
             tmpSource = ASCIIEncoding.ASCII.GetBytes(dataAss);
             assinatura = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
             //Console.WriteLine(ByteArrayToString(assinatura));
-            Console.WriteLine(assinatura);
-
         }
 
         private string ByteArrayToString(byte[] arrInput)
