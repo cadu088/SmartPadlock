@@ -17,13 +17,13 @@ namespace SmartPadlock.Classes
                 if (isLogin.status)
                 {
                     
-                    Task<string> data = controler.DescriptografarUserAsync(new Contract(user, false), new Contract(user, true));
+                    Task<string> data = controler.DescriptografarUserAsync(new Contract(user, ContractType.User), new Contract(user, ContractType.Password));
 
                     string response = await data;
 
                     if (response != null)
                     {
-                        aplications = controler.DeserializeJSON(response);
+                        aplications = controler.DeserializeAplicationJSON(response);
                     }
                 }
                 else { return false; }
@@ -89,13 +89,32 @@ namespace SmartPadlock.Classes
             }
         }
 
-        public bool saveAplication(Login isLogin, User user)
+        public async Task<bool> saveAplication(Login isLogin, User user, List<UserFile> usersFile)
         {
             if (isLogin.status)
             {
                 try
                 {
-                    return controler.CriptografarUser(new Contract(user, false), new Contract(user, true), controler.ReadingJSON(aplications));
+                    UserFile userFile = new UserFile(new Contract(user, ContractType.User).Contrato, replaceName(user.NAME_USER));
+                    if(usersFile.Count() == 0)
+                    {
+                        byte[] pass = Encoding.ASCII.GetBytes("1234567890@12345");
+                        string descripto = await controler.DescriptografarUserAsync(pass);
+                        usersFile = controler.DeserializeUserFileJSON(descripto);
+                    }
+                    if (!usersFile.Exists(x => x.localUser == userFile.localUser))
+                    {
+                        usersFile.Add(userFile);
+                        if (controler.CriptografarUser("1234567890@12345", controler.ReadingJSON(usersFile)))
+                        {
+                            return controler.CriptografarUser(new Contract(user, ContractType.User), new Contract(user, ContractType.Password), controler.ReadingJSON(aplications));
+                        }
+                    }else
+                    {
+                        return controler.CriptografarUser(new Contract(user, ContractType.User), new Contract(user, ContractType.Password), controler.ReadingJSON(aplications));
+                    }
+
+                    return false;
                 }
                 catch (Exception ex)
                 {
@@ -105,10 +124,29 @@ namespace SmartPadlock.Classes
             }
             else
             {
-                Console.WriteLine("Efetue login para visualizar!");
+                Console.WriteLine("Efetue login para salvar!");
                 return false;
             }
 
+        }
+
+        private string replaceName(string value)
+        {
+            string response = "";
+            int de = value.Length / 4;
+            int ate = de * 3;
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (i >= de && i <= ate)
+                {
+                    response += '*';
+                }
+                else
+                {
+                    response += value[i];
+                }
+            }
+            return response;
         }
     }
 }

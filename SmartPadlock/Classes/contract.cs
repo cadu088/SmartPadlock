@@ -8,15 +8,21 @@ using System.Security.Cryptography;
 
 namespace SmartPadlock.Classes
 {
+    public enum ContractType
+    {
+        User,
+        Password
+    }
+
     public class Contract
     {
-        public string contrato { get; private set; }
+        public string Contrato { get; private set; }
 
         private byte[] tmpSource;
 
-        public byte[] assinatura { get; private set; }
+        public byte[] Assinatura { get; private set; }
 
-        public Contract(User DATA_USER, bool TYPE_CONTRACT)
+        public Contract(User DATA_USER, ContractType TYPE_CONTRACT)
         {
             //CONTAR QUANTOS TICKES ATÉ A DATA DE NASCIMENTO
             float ticks = (float)(DATA_USER.DT_BIRTH_USER.Ticks / Math.Pow(DATA_USER.DT_BIRTH_USER.Ticks.ToString().Length, 10));
@@ -26,22 +32,17 @@ namespace SmartPadlock.Classes
             //SE TYPE_CONTRACT FOR TRUE CONTAMOS A QUANTIDADE DE CARACTER E MULTIPLICAMOS PELA SOBRA DA DIVISÃO POR 3
 
             float passCont = 0.0f;
-            if (TYPE_CONTRACT)
-            {
-                passCont = DATA_USER.PASSWORD_USER.Length * (DATA_USER.PASSWORD_USER.Length % 3 == 0 ? DATA_USER.PASSWORD_USER.Length : (DATA_USER.PASSWORD_USER.Length % 3));
-            }
-
-            //Verificador basico;
-            float hashPrimario = (float)((ticks * emailCaracter * (passCont == 0.0f ? (ticks / emailCaracter) : passCont)));
-
             //Verificador de caracter
             double hashVerificador = 0;
-            if (TYPE_CONTRACT)
+
+            if (TYPE_CONTRACT == ContractType.Password)
             {
                 hashVerificador = Math.Pow((verificaCaracter(DATA_USER.NAME_USER) +
                 verificaCaracter(DATA_USER.EMAIL_USER) +
                 verificaCaracter(DATA_USER.DT_BIRTH_USER.ToString()) +
                 verificaCaracter(DATA_USER.PASSWORD_USER )), -1);
+
+                passCont = DATA_USER.PASSWORD_USER.Length * (DATA_USER.PASSWORD_USER.Length % 3 == 0 ? DATA_USER.PASSWORD_USER.Length : (DATA_USER.PASSWORD_USER.Length % 3));
             }
             else
             {
@@ -51,18 +52,21 @@ namespace SmartPadlock.Classes
                 verificaCaracter(DATA_USER.EMAIL_USER + DATA_USER.DT_BIRTH_USER.ToString())), -1) / 0.63;
             }
 
+            //Verificador basico;
+            float hashPrimario = (float)((ticks * emailCaracter * (passCont == 0.0f ? (ticks / emailCaracter) : passCont)));
+
             //Concatena e cria o esqueleto 
-            string hashPrefab = (hashPrimario).ToString("E15", CultureInfo.InvariantCulture).Split('.')[1].Split('E')[0] + hashVerificador.ToString().Split(',')[1];
+            string hashPrefab = (hashPrimario).ToString("E15", CultureInfo.InvariantCulture)
+                .Split('.')[1]
+                .Split('E')[0] + hashVerificador.ToString().Split(',')[1];
 ;
 
             if (hashPrefab.Length < 40)
             {
                 int precisao = 40 - hashPrefab.Length;
-                for (int i = 0; i < precisao; i++)
-                {
-                    hashPrefab += "0";
-                }
+                hashPrefab += new string('0', precisao);
             }
+
             else
             {
                 string hashPrefabProvisorio = "";
@@ -74,11 +78,11 @@ namespace SmartPadlock.Classes
             }
 
 
-            contrato = hashPrefab;
+            Contrato = hashPrefab;
 
-            //Gerando assinatura hash
+            //Gerando Assinatura hash
             string dataAss = "";
-            if (TYPE_CONTRACT)
+            if (TYPE_CONTRACT == ContractType.Password)
             {
                 dataAss = (
                 verificaCaracter(DATA_USER.PASSWORD_USER) +
@@ -105,8 +109,8 @@ namespace SmartPadlock.Classes
             }
 
             tmpSource = ASCIIEncoding.ASCII.GetBytes(dataAss);
-            assinatura = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
-            //Console.WriteLine(ByteArrayToString(assinatura));
+            Assinatura = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+            //Console.WriteLine(ByteArrayToString(Assinatura));
         }
 
         private string ByteArrayToString(byte[] arrInput)
@@ -136,10 +140,10 @@ namespace SmartPadlock.Classes
         {
             //validar hash desse contrato com o de outro;
             bool bEqual = false;
-            if (tmpNewHash.Length == assinatura.Length)
+            if (tmpNewHash.Length == Assinatura.Length)
             {
                 int i = 0;
-                while ((i < tmpNewHash.Length) && (tmpNewHash[i] == assinatura[i]))
+                while ((i < tmpNewHash.Length) && (tmpNewHash[i] == Assinatura[i]))
                 {
                     i += 1;
                 }

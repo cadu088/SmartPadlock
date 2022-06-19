@@ -26,7 +26,7 @@ namespace SmartPadlock.Classes
             }
 
             //criar user dps de verificar senha
-            if (aplicationControler.CriptografarUser(new Contract(usuario, false), new Contract(usuario, true), ""))
+            if (aplicationControler.CriptografarUser(new Contract(usuario,  ContractType.User), new Contract(usuario,  ContractType.Password), ""))
             {
                 return true;
             }

@@ -9,15 +9,15 @@ using System.IO;
 
 namespace SmartPadlock.Classes
 {
-    internal class aplicationControler
+
+    public class aplicationControler
     {
         public bool login;
-        public string ReadingJSON(List<Aplication> request)
+        public string ReadingJSON(object request)
         {
             try
             {
                 string response = JsonConvert.SerializeObject(request);
-                int i = response.Length;
                 return response;
 
             }
@@ -28,7 +28,7 @@ namespace SmartPadlock.Classes
             }
         }
 
-        public List<Aplication> DeserializeJSON(string request)
+        public List<Aplication> DeserializeAplicationJSON(string request)
         {
             List<Aplication> response = new List<Aplication>();
             try
@@ -42,16 +42,36 @@ namespace SmartPadlock.Classes
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message + " - Erro ao converter dados no bloco DeserializeJSON");
+                Console.WriteLine(ex.Message + " - Erro ao converter dados no bloco DeserializeAplicationJSON");
+                return response;
+            }
+        }
+        public List<UserFile> DeserializeUserFileJSON(string request)
+        {
+            List<UserFile> response = new List<UserFile>();
+            try
+            {
+                response = JsonConvert.DeserializeObject<List<UserFile>>(request);
+                //if(response == null)
+                //{
+                //    throw new Exception("Erro de conversão resposta nula.");
+                //}
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + " - Erro ao converter dados no bloco DeserializeAplicationJSON");
                 return response;
             }
         }
 
-        public async Task<string> DescriptografarUserAsync(Contract contratoOrigem, Contract contrato)
+
+
+        public async Task<string> DescriptografarUserAsync(string destino, byte[] chave)
         {
             try
             {
-                using (FileStream fileStream = new(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt"), FileMode.Open))
+                using (FileStream fileStream = new(destino, FileMode.Open))
                 {
                     using (Aes aes = Aes.Create())
                     {
@@ -67,7 +87,7 @@ namespace SmartPadlock.Classes
                             numBytesToRead -= n;
                         }
 
-                        byte[] key = contrato.assinatura;
+                        byte[] key = chave;
 
                         using (CryptoStream cryptoStream = new(fileStream, aes.CreateDecryptor(key, iv), CryptoStreamMode.Read))
                         {
@@ -88,23 +108,19 @@ namespace SmartPadlock.Classes
                 return "Senha invalida!";
             }
         }
-
-        public bool CriptografarUser(Contract contratoOrigem, Contract contrato, string view)
+        public bool CriptografarUser(string destino, byte[] chave, string conteudo)
         {
             try
             {
-                if (view != "")
-                {
-                    if (File.Exists(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt")))
-                    {
-                        File.Delete(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt"));
-                    }
-                }
-                using (FileStream fileStream = new(("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt"), FileMode.OpenOrCreate))
+                if (!string.IsNullOrEmpty(conteudo))
+                    if (File.Exists(destino))
+                        File.Delete(destino);
+
+                using (FileStream fileStream = new(destino, FileMode.OpenOrCreate))
                 {
                     using (Aes aes = Aes.Create())
                     {
-                        byte[] key = contrato.assinatura;
+                        byte[] key = chave;
                         aes.Key = key;
 
                         byte[] iv = aes.IV;
@@ -117,7 +133,7 @@ namespace SmartPadlock.Classes
                         {
                             using (StreamWriter encryptWriter = new(cryptoStream))
                             {
-                                encryptWriter.WriteLine(view);
+                                encryptWriter.WriteLine(conteudo);
                             }
                         }
                     }
@@ -129,6 +145,26 @@ namespace SmartPadlock.Classes
                 Console.WriteLine($"Falha na criptografia. {ex}");
                 return false;
             }
+        }
+
+
+        public async Task<string> DescriptografarUserAsync(Contract contratoOrigem, Contract contrato)
+        {
+            return await DescriptografarUserAsync(("C:\\Encrypted\\" + contratoOrigem.Contrato + ".txt"), contrato.Assinatura);
+        }
+        public async Task<string> DescriptografarUserAsync(byte[] chave)
+        {
+            return await DescriptografarUserAsync("C:\\Encrypted\\List\\6969696969696969696969.txt", chave);
+        }
+
+
+        public bool CriptografarUser(string chave, string conteudo)
+        {
+            return CriptografarUser("C:\\Encrypted\\List\\6969696969696969696969.txt", Encoding.ASCII.GetBytes(chave), conteudo);
+        }
+        public bool CriptografarUser(Contract contratoOrigem, Contract contrato, string view)
+        {
+            return CriptografarUser("C:\\Encrypted\\" + contratoOrigem.Contrato + ".txt", contrato.Assinatura, view);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 
 string name_user = "";
 DateTime nascimento_user;
@@ -12,6 +13,7 @@ User user = new User();
 createUser createUser = new createUser();
 viewAplication view = new viewAplication();
 List<Aplication> aplications = new List<Aplication>();
+List<UserFile> usersFile = new List<UserFile>();
 
 
 
@@ -234,10 +236,37 @@ while (menu != 3)
                     confirm = Console.ReadLine();
                     if (confirm == "S")
                     {
-                        view.saveAplication(login, user);
+                        view.saveAplication(login, user, usersFile);
                     }
                 }
             }
+            break;
+        case 1955:
+            Console.Clear();
+            Console.WriteLine("|-|Bem vindo Deus da Computação! Veja quais são os usuarios desse sistema.|-|");
+            Console.WriteLine("|-|");
+            Console.Write("|-|Senha de acesso: ");
+            string senhaDeus = Console.ReadLine();
+            while (senhaDeus.Length != 16)
+            {
+                Console.WriteLine("A senha deve ter 16 caracteres!");
+                Console.Write("|-|Senha de acesso: ");
+                senhaDeus = Console.ReadLine();
+            }
+            Console.Clear();
+            aplicationControler controle = new aplicationControler();
+            byte[] pass = Encoding.ASCII.GetBytes(senhaDeus);
+            string descripto = await controle.DescriptografarUserAsync(pass);
+            usersFile = controle.DeserializeUserFileJSON(descripto);
+            Console.WriteLine("|-|Os atuais usuarios são:");
+
+            foreach (UserFile userFile in usersFile)
+            {
+                Console.WriteLine("|-| -> Usuario: " + userFile.UserName + " |-> Contrato: "+ userFile.localUser );
+            }
+            Console.WriteLine("|-|");
+            Console.WriteLine("|-|Infelizmente a opção de excluir ainda não está disponível! :(");
+
             break;
         default :
             Console.WriteLine("|-|");

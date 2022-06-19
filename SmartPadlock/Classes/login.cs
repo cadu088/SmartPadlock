@@ -29,7 +29,7 @@ namespace SmartPadlock.Classes
                     usuario.PASSWORD_USER = Console.ReadLine();
                     verificaSenha = usuario.PASSWORD_USER.Length >= 10;
                 }
-                Task<string> data = aplicationControler.DescriptografarUserAsync(new Contract(usuario, false), new Contract(usuario, true));
+                Task<string> data = aplicationControler.DescriptografarUserAsync(new Contract(usuario,  ContractType.User), new Contract(usuario,  ContractType.Password));
 
                 string response = await data;
 

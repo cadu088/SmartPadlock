@@ -24,28 +24,16 @@ namespace SmartPadlock.Classes
            NAME_USER = name;
            DT_BIRTH_USER = birth;
            EMAIL_USER = email;
-           PASSWORD_USER = password;
-           
+           PASSWORD_USER = password;           
         }
-
-
-
 
         public bool BuscarUser(bool sign)
         {
-            Contract contratoOrigem = new Contract(this, sign);
+            Contract contratoOrigem = new Contract(this, sign ? ContractType.Password : ContractType.User);
             try
             {
-                string path = ("C:\\Encrypted\\" + contratoOrigem.contrato + ".txt");
-                bool result = File.Exists(path);
-                if (result == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                string path = ("C:\\Encrypted\\" + contratoOrigem.Contrato + ".txt");
+                return File.Exists(path);
             }
             catch (Exception ex)
             {
